@@ -3,4 +3,6 @@
 
 # Jetbrains
 .idea/
-cmake-build-debug/
+
+# Build location
+build/
