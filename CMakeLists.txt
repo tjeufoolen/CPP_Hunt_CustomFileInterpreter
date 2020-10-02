@@ -6,7 +6,7 @@ project(${PROJECT_NAME})
 
 set(SRC_DIR "src")
 set(SOURCE "main.cpp")
+set(CMAKE_EXE_LINKER_FLAGS "-lcurl")
 set(CMAKE_CXX_STANDARD 17)
 
 add_executable(${PROJECT_NAME} main.cpp)
-target_link_directories(${PROJECT_NAME} PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/lib/curl")
