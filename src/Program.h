@@ -4,21 +4,22 @@
 #include <vector>
 #include <string>
 #include <map>
+#include "../Context.h"
 
 class Program
 {
     private:
         bool foundSolution;
         std::string baseUrl;
-        std::vector<std::string> stack;
-        std::map<std::string, int> labels;
-        std::map<std::string, std::string> variables;
+//        std::vector<std::string> stack;
+//        std::map<std::string, int> labels;
+//        std::map<std::string, std::string> variables;
     public:
         Program();
         Program(const std::string& baseUrl);
         std::string solve(const std::string& endpoint);
     private:
-        void handleExpression(const std::string& expression, const std::vector<std::string>& lines, int rule);
+        void handleExpression(const std::string& expression, Context& context, int rule);
 };
 
 

@@ -17,7 +17,7 @@
 int main()
 {
     // prepare
-//    Logger::getInstance()->toggleDebugMessages(true);
+    Logger::getInstance()->toggleDebugMessages(true);
     Program program{};
 
     // solve

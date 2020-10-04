@@ -2,6 +2,7 @@
 #include <wrappers/CUrlWrapper.h>
 #include <utils/Logger.h>
 #include <exceptions/NotImplementedException.h>
+#include <expressions/terminal/TextExpression.h>
 
 Program::Program()
 {
@@ -15,35 +16,41 @@ Program::Program(const std::string& baseUrl)
 
 std::string Program::solve(const std::string& endpoint)
 {
-    foundSolution = false;
+    std::unique_ptr<cUrlWrapper> cUrl{};
     std::string _endpoint = endpoint;
 
     // while .... end expression is not yet seen
+    foundSolution = false;
+    std::string lastStackValue;
+
+    Logger::getInstance()->info("Started solving...");
     while(!foundSolution)
     {
-        std::unique_ptr<cUrlWrapper> cUrl{};
         std::vector<std::string> lines = cUrl->getResponse(baseUrl + _endpoint);
+        Context context{};
 
         // Read response line by line
         for (auto it = lines.begin(); it != lines.end(); ++it)
         {
             int rule = std::distance(lines.begin(), it);
-            handleExpression(lines[rule], lines, rule);
+            Logger::getInstance()->debug("executing expression >> " + lines[rule]);
+            handleExpression(lines[rule], context, rule);
 
             if (foundSolution) break; // Quit early if solution is already found
         }
 
-        Logger::getInstance()->info(stack.back());
-        _endpoint = stack.back();
-        foundSolution = true; // todo: TEMP <--------  REMOVE
+        lastStackValue = context.backStack();
+        Logger::getInstance()->info("redirected to new file: " + lastStackValue);
+        _endpoint = lastStackValue;
+        foundSolution = true; //todo: Remove when all parsing works and end expression is detected!!! <------------------
     }
     // endwhile
 
-    return stack.back();
+    return lastStackValue;
 }
 
 
-void Program::handleExpression(const std::string& expression, const std::vector<std::string>& lines, int rule)
+void Program::handleExpression(const std::string& expression, Context& context, int rule)
 {
     // Digits
     if (std::all_of(expression.begin(), expression.end(), ::isdigit))
@@ -55,205 +62,155 @@ void Program::handleExpression(const std::string& expression, const std::vector<
             if (val > 0) val=-abs(val);
             if (val < 0) val=abs(val);
 
-            stack.push_back(std::to_string(val));
-            Logger::getInstance()->debug("added " + stack.back() + " to the stack.");
+            context.pushToStack(std::to_string(val));
 //            stack.push_back(std::to_string(neg(value)));
         }
 
-        stack.push_back(expression);
-        Logger::getInstance()->debug("added " + stack.back() + " to the stack.");
+        context.pushToStack(expression);
         return;
     }
 
     // Values & types
     switch(expression.front())
     {
-        case '\\': // Text to end of line
-            stack.push_back(expression.substr(1));
-            Logger::getInstance()->debug("added " + stack.back() + " to the stack.");
-            return;
-        case ':': // Label definition
-            labels[expression.substr(1)] = rule+1;
-            Logger::getInstance()->debug("defined label: " + expression.substr(1) + "->" + std::to_string(labels[expression.substr(1)]));
-            return;
-        case '>': // Label reference
-            stack.push_back(std::to_string(labels[expression.substr(1)]));
-            Logger::getInstance()->debug("added " + stack.back() + " to the stack.");
-            return;
-        case '=': // Variable assignment
-            variables[expression.substr(1)] = stack.back();
-            Logger::getInstance()->debug("set variable: " + expression.substr(1) + "=" + variables[expression.substr(1)]);
-            stack.pop_back();
-            Logger::getInstance()->debug("removed last item from stack.");
-            return;
-        case '$': // Variable reference
-            stack.push_back(variables[expression.substr(1)]);
-            Logger::getInstance()->debug("added " + stack.back() + " to the stack.");
-            return;
+        case '\\': TextExpression{expression.substr(1)}.Interpret(context); return;
+        case  ':': context.setLabel(expression.substr(1), rule+1); return;
+        case  '>': context.pushToStack(std::to_string(context.getLabel(expression.substr(1)))); return;
+        case  '=': context.setVariable(expression.substr(1), *context.popStack()); return;
+        case  '$': context.pushToStack(context.getVariable(expression.substr(1))); return;
     }
 
     // Integer operations
     if (expression == "add")
     {
-        int val2 = stoi(stack.back()); stack.pop_back();
-        int val1 = stoi(stack.back()); stack.pop_back();
-        Logger::getInstance()->debug("removed last 2 items from stack.");
+        int val2 = stoi(*context.popStack());
+        int val1 = stoi(*context.popStack());
 
-        stack.push_back(std::to_string(val1 + val2));
-        Logger::getInstance()->debug("added " + stack.back() + " to the stack.");
+        context.pushToStack(std::to_string(val1 + val2));
         return;
     }
 
     if (expression == "sub")
     {
-        int val2 = stoi(stack.back()); stack.pop_back();
-        int val1 = stoi(stack.back()); stack.pop_back();
-        Logger::getInstance()->debug("removed last 2 items from stack.");
+        int val2 = stoi(*context.popStack());
+        int val1 = stoi(*context.popStack());
 
-        stack.push_back(std::to_string(val1 - val2));
-        Logger::getInstance()->debug("added " + stack.back() + " to the stack.");
+        context.pushToStack(std::to_string(val1 - val2));
         return;
     }
 
     if (expression == "mul")
     {
-        int val2 = stoi(stack.back()); stack.pop_back();
-        int val1 = stoi(stack.back()); stack.pop_back();
-        Logger::getInstance()->debug("removed last 2 items from stack.");
+        int val2 = stoi(*context.popStack());
+        int val1 = stoi(*context.popStack());
 
-        stack.push_back(std::to_string(val1 * val2));
-        Logger::getInstance()->debug("added " + stack.back() + " to the stack.");
+        context.pushToStack(std::to_string(val1 * val2));
         return;
     }
 
     if (expression == "div")
     {
-        int val2 = stoi(stack.back()); stack.pop_back();
-        int val1 = stoi(stack.back()); stack.pop_back();
-        Logger::getInstance()->debug("removed last 2 items from stack.");
+        int val2 = stoi(*context.popStack());
+        int val1 = stoi(*context.popStack());
 
-        stack.push_back(std::to_string(val1 / val2));
-        Logger::getInstance()->debug("added " + stack.back() + " to the stack.");
+        context.pushToStack(std::to_string(val1 / val2));
         return;
     }
 
     if (expression == "mod")
     {
-        int val2 = stoi(stack.back()); stack.pop_back();
-        int val1 = stoi(stack.back()); stack.pop_back();
-        Logger::getInstance()->debug("removed last 2 items from stack.");
+        int val2 = stoi(*context.popStack());
+        int val1 = stoi(*context.popStack());
 
-        stack.push_back(std::to_string(val1 % val2));
-        Logger::getInstance()->debug("added " + stack.back() + " to the stack.");
+        context.pushToStack(std::to_string(val1 % val2));
         return;
     }
 
     if (expression == "neg")
     {
-        int val = stoi(stack.back()); stack.pop_back();
-        Logger::getInstance()->debug("removed last item from stack.");
+        int val = stoi(*context.popStack());
 
         if (val > 0) val=-abs(val);
         if (val < 0) val=abs(val);
 
-        stack.push_back(std::to_string(val));
-        Logger::getInstance()->debug("added " + stack.back() + " to the stack.");
+        context.pushToStack(std::to_string(val));
         return;
     }
 
     if (expression == "abs")
     {
-        int val = stoi(stack.back()); stack.pop_back();
-        Logger::getInstance()->debug("removed last item from stack.");
-        stack.push_back(std::to_string(abs(val)));
-        Logger::getInstance()->debug("added " + stack.back() + " to the stack.");
+        int val = stoi(*context.popStack());
+        context.pushToStack(std::to_string(abs(val)));
         return;
     }
 
     if (expression == "inc")
     {
-        int val = stoi(stack.back()); stack.pop_back();
-        Logger::getInstance()->debug("removed last item from stack.");
-        stack.push_back(std::to_string(++val));
-        Logger::getInstance()->debug("added " + stack.back() + " to the stack.");
+        int val = stoi(*context.popStack());
+        context.pushToStack(std::to_string(++val));
         return;
     }
 
     if (expression == "dec")
     {
-        int val = stoi(stack.back()); stack.pop_back();
-        Logger::getInstance()->debug("removed last item from stack.");
-        stack.push_back(std::to_string(--val));
-        Logger::getInstance()->debug("added " + stack.back() + " to the stack.");
+        int val = stoi(*context.popStack());
+        context.pushToStack(std::to_string(--val));
         return;
     }
 
     // String operations
     if (expression == "dup")
     {
-        std::string str = stack.back();
-        stack.push_back(str);
-        Logger::getInstance()->debug("added " + stack.back() + " to the stack.");
+        context.pushToStack(context.backStack());
         return;
     }
 
     if (expression == "rev")
     {
-        std::string str = stack.back(); stack.pop_back();
-        Logger::getInstance()->debug("removed last item from stack.");
-        reverse(str.begin(), str.end());
-        stack.push_back(str);
-        Logger::getInstance()->debug("added " + stack.back() + " to the stack.");
+        auto str = context.popStack();
+        reverse(str->begin(), str->end());
+        context.pushToStack(*str);
         return;
     }
 
     if (expression == "slc")
     {
-        int to = stoi(stack.back()); stack.pop_back();
-        int from = stoi(stack.back()); stack.pop_back();
-        std::string value = stack.back(); stack.pop_back();
-        Logger::getInstance()->debug("removed last 3 items from stack.");
+        int to = stoi(*context.popStack());
+        int from = stoi(*context.popStack());
+        auto value = context.popStack();
 
-        stack.push_back(value.substr(from, to-from+1));
-        Logger::getInstance()->debug("added " + stack.back() + " to the stack.");
+        context.pushToStack(value->substr(from, to-from+1));
         return;
     }
 
     if (expression == "idx")
     {
-        int index = stoi(stack.back()); stack.pop_back();
-        std::string str = stack.back(); stack.pop_back();
-        Logger::getInstance()->debug("removed last 2 items from stack.");
+        int index = stoi(*context.popStack());
+        auto str = context.popStack();
 
-        stack.push_back(std::to_string(str.at(index)));
-        Logger::getInstance()->debug("added " + stack.back() + " to the stack.");
+        context.pushToStack(std::to_string(str->at(index)));
         return;
     }
 
     if (expression == "cat")
     {
-        std::string str2 = stack.back(); stack.pop_back();
-        std::string str1 = stack.back(); stack.pop_back();
-        Logger::getInstance()->debug("removed last 2 items from stack.");
+        auto str2 = context.popStack();
+        auto str1 = context.popStack();
 
-        stack.push_back(str1 + str2);
-        Logger::getInstance()->debug("added " + stack.back() + " to the stack.");
+        context.pushToStack(*str1 + *str2);
         return;
     }
 
     if (expression == "len")
     {
-        int val = stack.back().size(); stack.pop_back();
-        Logger::getInstance()->debug("removed last item from stack.");
-        stack.push_back(std::to_string(val));
-        Logger::getInstance()->debug("added " + stack.back() + " to the stack.");
+        int val = context.backStack().size(); context.popStack();
+        context.pushToStack(std::to_string(val));
         return;
     }
 
     if (expression == "rot")
     {
-        std::string a = stack.back(); stack.pop_back();
-        Logger::getInstance()->debug("removed last item from stack.");
+        std::string a = *context.popStack();
 
         int z = a.length(), i=0;
         for(i=0; i<=(z); i++) //Rot13 Algorithm
@@ -274,23 +231,29 @@ void Program::handleExpression(const std::string& expression, const std::vector<
             }
         }
 
-        stack.push_back(a);
-        Logger::getInstance()->debug("added " + stack.back() + " to the stack.");
+        context.pushToStack(a);
         return;
     }
 
     if (expression == "enl")
     {
-        std::string str = stack.back(); stack.pop_back();
-        Logger::getInstance()->debug("removed last item from stack.");
-        stack.push_back(str + '\n');
-        Logger::getInstance()->debug("added " + stack.back() + " to the stack.");
+        auto str = context.popStack();
+        context.pushToStack(*str + '\n');
         return;
     }
 
     // Test & Jumps
+    if (expression == "gto") throw NotImplementedException();
+    if (expression == "geq") throw NotImplementedException();
+    if (expression == "gne") throw NotImplementedException();
+    if (expression == "glt") throw NotImplementedException();
+    if (expression == "gle") throw NotImplementedException();
+    if (expression == "ggt") throw NotImplementedException();
+    if (expression == "gge") throw NotImplementedException();
 
     // Functions
+    if (expression == "fun") throw NotImplementedException();
+    if (expression == "ret") throw NotImplementedException();
 
     // End
     if (expression == "end") foundSolution = true;
