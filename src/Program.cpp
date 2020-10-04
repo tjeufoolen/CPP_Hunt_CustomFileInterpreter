@@ -8,37 +8,42 @@ Program::Program()
     baseUrl = "https://www.swiftcoder.nl/cpp1/";
 }
 
-Program::Program(const std::string& baseUrl) : baseUrl(baseUrl) {}
+
+Program::Program(const std::string& baseUrl)
+    : baseUrl(baseUrl) {}
+
 
 std::string Program::solve(const std::string& endpoint)
 {
-    std::unique_ptr<cUrlWrapper> cUrl{};
-    std::vector<std::string> lines = cUrl->getResponse(baseUrl + endpoint);
+    foundSolution = false;
+    std::string _endpoint = endpoint;
 
-    // Read response line by line
-    for (auto it = lines.begin(); it != lines.end(); ++it)
+    // while .... end expression is not yet seen
+    while(!foundSolution)
     {
-        int index = std::distance(lines.begin(), it);
+        std::unique_ptr<cUrlWrapper> cUrl{};
+        std::vector<std::string> lines = cUrl->getResponse(baseUrl + _endpoint);
 
-        Logger::getInstance()->debug("Expression: " + lines[index]);
-        handleExpression(lines[index], index+1); // add 1 for actual ruleNumber
+        // Read response line by line
+        for (auto it = lines.begin(); it != lines.end(); ++it)
+        {
+            int rule = std::distance(lines.begin(), it);
+            handleExpression(lines[rule], lines, rule);
+
+            if (foundSolution) break; // Quit early if solution is already found
+        }
+
+        Logger::getInstance()->info(stack.back());
+        _endpoint = stack.back();
+        foundSolution = true; // todo: TEMP <--------  REMOVE
     }
-    Logger::getInstance()->info(stack.back());
+    // endwhile
 
-
-    return "super awesome result string (placeholder)";
+    return stack.back();
 }
 
-// ----- Expressions
 
-int neg(int value)
-{
-    throw NotImplementedException();
-}
-
-// ----- Handling
-
-void Program::handleExpression(const std::string& expression, int ruleNumber) // <-- todo: rulenumber
+void Program::handleExpression(const std::string& expression, const std::vector<std::string>& lines, int rule)
 {
     // Digits
     if (std::all_of(expression.begin(), expression.end(), ::isdigit))
@@ -49,7 +54,6 @@ void Program::handleExpression(const std::string& expression, int ruleNumber) //
 
             if (val > 0) val=-abs(val);
             if (val < 0) val=abs(val);
-
 
             stack.push_back(std::to_string(val));
             Logger::getInstance()->debug("added " + stack.back() + " to the stack.");
@@ -69,7 +73,7 @@ void Program::handleExpression(const std::string& expression, int ruleNumber) //
             Logger::getInstance()->debug("added " + stack.back() + " to the stack.");
             return;
         case ':': // Label definition
-            labels[expression.substr(1)] = ruleNumber+1;
+            labels[expression.substr(1)] = rule+1;
             Logger::getInstance()->debug("defined label: " + expression.substr(1) + "->" + std::to_string(labels[expression.substr(1)]));
             return;
         case '>': // Label reference
@@ -289,4 +293,5 @@ void Program::handleExpression(const std::string& expression, int ruleNumber) //
     // Functions
 
     // End
+    if (expression == "end") foundSolution = true;
 }

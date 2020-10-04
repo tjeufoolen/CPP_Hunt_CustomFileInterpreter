@@ -21,8 +21,8 @@ int main()
     Program program{};
 
     // solve
-    std::string result = program.solve("start.txt");
-    Logger::getInstance()->info("result: " + result);
+    std::string solution = program.solve("start.txt");
+    Logger::getInstance()->info("solution: " + solution);
 
     return 0;
 }

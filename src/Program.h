@@ -8,6 +8,7 @@
 class Program
 {
     private:
+        bool foundSolution;
         std::string baseUrl;
         std::vector<std::string> stack;
         std::map<std::string, int> labels;
@@ -17,7 +18,7 @@ class Program
         Program(const std::string& baseUrl);
         std::string solve(const std::string& endpoint);
     private:
-        void handleExpression(const std::string& expression, int ruleNumber);
+        void handleExpression(const std::string& expression, const std::vector<std::string>& lines, int rule);
 };
 
 

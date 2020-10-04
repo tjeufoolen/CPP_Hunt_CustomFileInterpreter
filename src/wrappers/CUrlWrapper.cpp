@@ -5,10 +5,12 @@ cUrlWrapper::cUrlWrapper()
     curl_global_init(CURL_GLOBAL_DEFAULT);
 }
 
+
 cUrlWrapper::~cUrlWrapper()
 {
     curl_global_cleanup();
 }
+
 
 std::vector<std::string> cUrlWrapper::getResponse(const std::string& url)
 {
@@ -17,7 +19,8 @@ std::vector<std::string> cUrlWrapper::getResponse(const std::string& url)
     std::string readBuffer;
 
     curl = curl_easy_init();
-    if (curl) {
+    if (curl)
+    {
         curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
         curl_easy_setopt(curl, CURLOPT_TIMEOUT, 10);
         curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
@@ -39,12 +42,14 @@ std::vector<std::string> cUrlWrapper::getResponse(const std::string& url)
     return getLinesFromText(readBuffer);
 }
 
+
 std::size_t cUrlWrapper::callback(const char* in, std::size_t size, std::size_t num, std::string* out)
 {
     const std::size_t totalBytes(size * num);
     out->append(in, totalBytes);
     return totalBytes;
 }
+
 
 std::vector<std::string> cUrlWrapper::getLinesFromText(const std::string& text)
 {
