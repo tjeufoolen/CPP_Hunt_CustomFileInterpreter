@@ -10,7 +10,10 @@ Logger* Logger::getInstance()
     return instance;
 }
 
-Logger::Logger() {}
+void Logger::toggleDebugMessages(bool show)
+{
+    showDebug = show;
+}
 
 void Logger::debug(const std::string &message)
 {
@@ -23,7 +26,4 @@ void Logger::info(const std::string &message)
     std::cout << "[INFO] >> " << message << std::endl;
 }
 
-void Logger::toggleDebugMessages(bool show)
-{
-    showDebug = show;
-}
+Logger::Logger() {}

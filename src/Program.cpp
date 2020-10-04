@@ -1,5 +1,5 @@
-#include <program.h>
-#include <wrappers/curlwrapper.h>
+#include <Program.h>
+#include <wrappers/CUrlWrapper.h>
 #include <utils/Logger.h>
 #include <exceptions/NotImplementedException.h>
 
