@@ -40,6 +40,8 @@ std::string Program::solve(const std::string& endpoint)
         }
 
         lastStackValue = context.backStack();
+        if (foundSolution) break; // Quit early if solution is already found
+
         Logger::getInstance()->info("redirected to new file: " + lastStackValue);
         _endpoint = lastStackValue;
         foundSolution = true; //todo: Remove when all parsing works and end expression is detected!!! <------------------
