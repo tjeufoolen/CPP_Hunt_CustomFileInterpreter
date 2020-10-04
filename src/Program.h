@@ -11,9 +11,6 @@ class Program
     private:
         bool foundSolution;
         std::string baseUrl;
-//        std::vector<std::string> stack;
-//        std::map<std::string, int> labels;
-//        std::map<std::string, std::string> variables;
     public:
         Program();
         Program(const std::string& baseUrl);
