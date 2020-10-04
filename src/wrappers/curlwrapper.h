@@ -9,13 +9,13 @@
 
 class cUrlWrapper
 {
+    private:
+        static std::size_t callback(const char* in, std::size_t size, std::size_t num, std::string* out);
+        std::vector<std::string> getLinesFromText(const std::string& text);
     public:
         cUrlWrapper();
         ~cUrlWrapper();
         std::vector<std::string> getResponse(const std::string& url);
-    private:
-        static std::size_t callback(const char* in, std::size_t size, std::size_t num, std::string* out);
-        std::vector<std::string> getLinesFromText(const std::string& text);
 };
 
 

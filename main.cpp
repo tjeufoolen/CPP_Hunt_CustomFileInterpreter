@@ -1,5 +1,5 @@
-#include <iostream>
-#include "src/curlwrapper.h"
+#include <program.h>
+#include <utils/Logger.h>
 
 /*
  *
@@ -16,13 +16,14 @@
  */
 int main()
 {
-    const std::string baseUrl = "https://www.swiftcoder.nl/cpp1/";
+    // prepare
+//    Logger::getInstance()->toggleDebugMessages(true);
+    Program program{};
 
-    std::unique_ptr<cUrlWrapper> cUrl{};
-    std::vector<std::string> lines = cUrl->getResponse(baseUrl + "start.txt");
+    // solve
+    std::string result = program.solve("start.txt");
+    Logger::getInstance()->info("result: " + result);
 
-    // Read response line by line
-    for(auto const& line: lines) {
-        std::cout << line << std::endl;
-    }
+    return 0;
 }
+

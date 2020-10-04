@@ -55,7 +55,9 @@ std::vector<std::string> cUrlWrapper::getLinesFromText(const std::string& text)
     {
         std::string str;
         getline(ss, str);
-        lines.push_back(str);
+
+        if (!str.empty())
+            lines.push_back(str);
     }
 
     return lines;
