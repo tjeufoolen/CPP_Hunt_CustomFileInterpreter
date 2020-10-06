@@ -2,7 +2,7 @@
 #include <wrappers/CUrlWrapper.h>
 #include <utils/Logger.h>
 #include <exceptions/NotImplementedException.h>
-#include <expressions/terminal/TextExpression.h>
+#include <expressions/Expressions.h>
 
 Program::Program()
 {
@@ -33,7 +33,7 @@ std::string Program::solve(const std::string& endpoint)
         for (auto it = lines.begin(); it != lines.end(); ++it)
         {
             int rule = std::distance(lines.begin(), it);
-            Logger::getInstance().debug("executing expression >> " + lines[rule]);
+            Logger::getInstance().debug(lines[rule]);
             handleExpression(lines[rule], context, rule);
 
             if (foundSolution) break; // Quit early if solution is already found
@@ -56,193 +56,39 @@ void Program::handleExpression(const std::string& expression, Context& context, 
 {
     // Digits
     if (std::all_of(expression.begin(), expression.end(), ::isdigit))
-    {
-        if (int value = stoi(expression) < 0)
-        {
-            int val = stoi(expression);
-
-            if (val > 0) val=-abs(val);
-            if (val < 0) val=abs(val);
-
-            context.pushToStack(std::to_string(val));
-//            stack.push_back(std::to_string(neg(value)));
-        }
-
-        context.pushToStack(expression);
-        return;
-    }
+        { DigitsExpression{expression}.Interpret(context); return; }
 
     // Values & types
+    std::string exp = expression.substr(1);
     switch(expression.front())
     {
-        case '\\': TextExpression{expression.substr(1)}.Interpret(context); return;
-        case  ':': context.setLabel(expression.substr(1), rule+1); return;
-        case  '>': context.pushToStack(std::to_string(context.getLabel(expression.substr(1)))); return;
-        case  '=': context.setVariable(expression.substr(1), *context.popStack()); return;
-        case  '$': context.pushToStack(context.getVariable(expression.substr(1))); return;
+        case '\\': TextExpression{exp}.Interpret(context); return;
+        case  ':': LabelDefinitionExpression{exp, rule+1}.Interpret(context); return;
+        case  '>': context.pushToStack(std::to_string(context.getLabel(exp))); return;
+        case  '=': VariableAssignmentExpression{exp, *context.popStack()}.Interpret(context); return;
+        case  '$': VariableReferenceExpression{exp}.Interpret(context); return;
     }
 
     // Integer operations
-    if (expression == "add")
-    {
-        int val2 = stoi(*context.popStack());
-        int val1 = stoi(*context.popStack());
-
-        context.pushToStack(std::to_string(val1 + val2));
-        return;
-    }
-
-    if (expression == "sub")
-    {
-        int val2 = stoi(*context.popStack());
-        int val1 = stoi(*context.popStack());
-
-        context.pushToStack(std::to_string(val1 - val2));
-        return;
-    }
-
-    if (expression == "mul")
-    {
-        int val2 = stoi(*context.popStack());
-        int val1 = stoi(*context.popStack());
-
-        context.pushToStack(std::to_string(val1 * val2));
-        return;
-    }
-
-    if (expression == "div")
-    {
-        int val2 = stoi(*context.popStack());
-        int val1 = stoi(*context.popStack());
-
-        context.pushToStack(std::to_string(val1 / val2));
-        return;
-    }
-
-    if (expression == "mod")
-    {
-        int val2 = stoi(*context.popStack());
-        int val1 = stoi(*context.popStack());
-
-        context.pushToStack(std::to_string(val1 % val2));
-        return;
-    }
-
-    if (expression == "neg")
-    {
-        int val = stoi(*context.popStack());
-
-        if (val > 0) val=-abs(val);
-        if (val < 0) val=abs(val);
-
-        context.pushToStack(std::to_string(val));
-        return;
-    }
-
-    if (expression == "abs")
-    {
-        int val = stoi(*context.popStack());
-        context.pushToStack(std::to_string(abs(val)));
-        return;
-    }
-
-    if (expression == "inc")
-    {
-        int val = stoi(*context.popStack());
-        context.pushToStack(std::to_string(++val));
-        return;
-    }
-
-    if (expression == "dec")
-    {
-        int val = stoi(*context.popStack());
-        context.pushToStack(std::to_string(--val));
-        return;
-    }
+    if (expression == "add") { AddExpression{}.Interpret(context); return; }
+    if (expression == "sub") { SubtractExpression{}.Interpret(context); return; }
+    if (expression == "mul") { MultiplyExpression{}.Interpret(context); return; }
+    if (expression == "div") { DivideExpression{}.Interpret(context); return; }
+    if (expression == "mod") { ModuloExpression{}.Interpret(context); return; }
+    if (expression == "neg") { NegateExpression{}.Interpret(context); return; }
+    if (expression == "abs") { AbsoluteExpression{}.Interpret(context); return; }
+    if (expression == "inc") { IncrementExpression{}.Interpret(context); return; }
+    if (expression == "dec") { DecrementExpression{}.Interpret(context); return; }
 
     // String operations
-    if (expression == "dup")
-    {
-        context.pushToStack(context.backStack());
-        return;
-    }
-
-    if (expression == "rev")
-    {
-        auto str = context.popStack();
-        reverse(str->begin(), str->end());
-        context.pushToStack(*str);
-        return;
-    }
-
-    if (expression == "slc")
-    {
-        int to = stoi(*context.popStack());
-        int from = stoi(*context.popStack());
-        auto value = context.popStack();
-
-        context.pushToStack(value->substr(from, to-from+1));
-        return;
-    }
-
-    if (expression == "idx")
-    {
-        int index = stoi(*context.popStack());
-        auto str = context.popStack();
-
-        context.pushToStack(std::to_string(str->at(index)));
-        return;
-    }
-
-    if (expression == "cat")
-    {
-        auto str2 = context.popStack();
-        auto str1 = context.popStack();
-
-        context.pushToStack(*str1 + *str2);
-        return;
-    }
-
-    if (expression == "len")
-    {
-        int val = context.backStack().size(); context.popStack();
-        context.pushToStack(std::to_string(val));
-        return;
-    }
-
-    if (expression == "rot")
-    {
-        std::string a = *context.popStack();
-
-        int z = a.length(), i=0;
-        for(i=0; i<=(z); i++) //Rot13 Algorithm
-        {
-            if(a[i] < 91 && a[i] > 64) //uppercase
-            {
-                if(a[i] < 78)
-                    a[i] = a[i] + 13;
-                else
-                    a[i] = a[i] - 13;
-            }
-            if(a[i] < 123 && a[i] > 96) //lowercase
-            {
-                if(a[i] < 110)
-                    a[i] = a[i] + 13;
-                else
-                    a[i] = a[i] - 13;
-            }
-        }
-
-        context.pushToStack(a);
-        return;
-    }
-
-    if (expression == "enl")
-    {
-        auto str = context.popStack();
-        context.pushToStack(*str + '\n');
-        return;
-    }
+    if (expression == "dup") { DuplicateExpression{}.Interpret(context); return; }
+    if (expression == "rev") { ReverseExpression{}.Interpret(context); return; }
+    if (expression == "slc") { SubstringExpression{}.Interpret(context); return; }
+    if (expression == "idx") { IndexingExpression{}.Interpret(context); return; }
+    if (expression == "cat") { ConcatenationExpression{}.Interpret(context); return; }
+    if (expression == "len") { LengthExpression{}.Interpret(context); return; }
+    if (expression == "rot") { ROT13Expression{}.Interpret(context); return; }
+    if (expression == "enl") { NewLineExpression{}.Interpret(context); return; }
 
     // Test & Jumps
     if (expression == "gto") throw NotImplementedException();
