@@ -1,7 +1,6 @@
 #include <Program.h>
 #include <wrappers/CUrlWrapper.h>
 #include <utils/Logger.h>
-#include <exceptions/NotImplementedException.h>
 #include <expressions/Expressions.h>
 
 Program::Program()
@@ -9,10 +8,8 @@ Program::Program()
     baseUrl = "https://www.swiftcoder.nl/cpp1/";
 }
 
-
 Program::Program(const std::string& baseUrl)
     : baseUrl(baseUrl) {}
-
 
 std::string Program::solve(const std::string& endpoint)
 {
@@ -70,17 +67,6 @@ void Program::handleExpression(const std::string& expression, Context& context)
     if (std::all_of(expression.begin(), expression.end(), ::isdigit))
         { DigitsExpression{expression}.Interpret(context); return; }
 
-    // Values & types
-    std::string exp = expression.substr(1);
-    switch(expression.front())
-    {
-        case '\\': TextExpression{exp}.Interpret(context); return;
-        case  ':': LabelDefinitionExpression{exp, *currentRule}.Interpret(context); return;
-        case  '>': LabelReferenceExpression{exp}.Interpret(context); return;
-        case  '=': VariableAssignmentExpression{exp, *context.popStack()}.Interpret(context); return;
-        case  '$': VariableReferenceExpression{exp}.Interpret(context); return;
-    }
-
     // Integer operations
     if (expression == "add") { AddExpression{}.Interpret(context); return; }
     if (expression == "sub") { SubtractExpression{}.Interpret(context); return; }
@@ -117,4 +103,15 @@ void Program::handleExpression(const std::string& expression, Context& context)
 
     // End
     if (expression == "end") foundSolution = true;
+
+    // Values & types
+    std::string exp = expression.substr(1);
+    switch(expression.front())
+    {
+        case '\\': TextExpression{exp}.Interpret(context); return;
+        case  ':': LabelDefinitionExpression{exp, *currentRule}.Interpret(context); return;
+        case  '>': LabelReferenceExpression{exp}.Interpret(context); return;
+        case  '=': VariableAssignmentExpression{exp, *context.popStack()}.Interpret(context); return;
+        case  '$': VariableReferenceExpression{exp}.Interpret(context); return;
+    }
 }

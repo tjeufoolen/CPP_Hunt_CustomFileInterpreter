@@ -22,7 +22,6 @@ int main()
 
     // solve
 //    std::string solution = program.solve("start.txt");
-    std::string solution = program.solve("4812-9-6727.txt");
     Logger::getInstance().info("solution: " + solution);
 
     return 0;

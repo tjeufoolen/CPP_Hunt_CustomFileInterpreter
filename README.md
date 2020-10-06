@@ -12,10 +12,10 @@ Elaboration of final assessment for the CPPLS1 module.
 4. Run the program and retrieve the solution 🔍:shipit:.
 
 ## Solution
-The end solution of this assessment is found by following the path of files:
-- `start.txt`
-- `aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.txt`
-- `4812-9-6727.txt`
+The end solution of this assessment is found by following these files in order:
+1. `start.txt`
+2. `aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.txt`
+3. `4812-9-6727.txt`
 
 ## Author
 - [Tjeu Foolen](https://github.com/tjeufoolen)
