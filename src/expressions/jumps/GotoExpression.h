@@ -6,7 +6,10 @@
 
 class GotoExpression : public AbstractExpression
 {
+    private:
+        int* rule;
     public:
+        GotoExpression(int* currentUrl);
         void Interpret(Context& context) override;
 };
 

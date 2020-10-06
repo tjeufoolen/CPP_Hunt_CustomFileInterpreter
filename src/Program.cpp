@@ -21,6 +21,7 @@ std::string Program::solve(const std::string& endpoint)
 
     // while .... end expression is not yet seen
     foundSolution = false;
+    *currentRule = 0;
     std::string lastStackValue;
 
     Logger::getInstance().info("Started solving...");
@@ -32,11 +33,14 @@ std::string Program::solve(const std::string& endpoint)
         // Read response line by line
         for (auto it = lines.begin(); it != lines.end(); ++it)
         {
-            int rule = std::distance(lines.begin(), it);
-            Logger::getInstance().debug(lines[rule]);
-            handleExpression(lines[rule], context, rule);
+            *currentRule = std::distance(lines.begin(), it);
+
+            Logger::getInstance().debug(lines[*currentRule]);
+            handleExpression(lines[*currentRule], context);
 
             if (foundSolution) break; // Quit early if solution is already found
+
+            it = lines.begin() + *currentRule;
         }
 
         lastStackValue = context.backStack();
@@ -44,7 +48,7 @@ std::string Program::solve(const std::string& endpoint)
 
         Logger::getInstance().info("redirected to new file: " + lastStackValue);
         _endpoint = lastStackValue;
-        foundSolution = true; //todo: Remove when all parsing works and end expression is detected!!! <------------------
+//        foundSolution = true; //todo: Remove when all parsing works and end expression is detected!!! <------------------
     }
     // endwhile
 
@@ -52,7 +56,7 @@ std::string Program::solve(const std::string& endpoint)
 }
 
 
-void Program::handleExpression(const std::string& expression, Context& context, int rule)
+void Program::handleExpression(const std::string& expression, Context& context)
 {
     // Digits
     if (std::all_of(expression.begin(), expression.end(), ::isdigit))
@@ -63,7 +67,7 @@ void Program::handleExpression(const std::string& expression, Context& context, 
     switch(expression.front())
     {
         case '\\': TextExpression{exp}.Interpret(context); return;
-        case  ':': LabelDefinitionExpression{exp, rule+1}.Interpret(context); return;
+        case  ':': LabelDefinitionExpression{exp, *currentRule}.Interpret(context); return;
         case  '>': LabelReferenceExpression{exp}.Interpret(context); return;
         case  '=': VariableAssignmentExpression{exp, *context.popStack()}.Interpret(context); return;
         case  '$': VariableReferenceExpression{exp}.Interpret(context); return;
@@ -91,9 +95,9 @@ void Program::handleExpression(const std::string& expression, Context& context, 
     if (expression == "enl") { NewLineExpression{}.Interpret(context); return; }
 
     // Test & Jumps
-    if (expression == "gto") { GotoExpression{}.Interpret(context); return; }
+    if (expression == "gto") { GotoExpression{currentRule}.Interpret(context); return; }
     if (expression == "geq") { GotoIfEqualExpression{}.Interpret(context); return; }
-    if (expression == "gne") { GotoIfNotEqualExpression{}.Interpret(context); return; }
+    if (expression == "gne") { GotoIfNotEqualExpression{currentRule}.Interpret(context); return; }
     if (expression == "glt") { GotoIfLessExpression{}.Interpret(context); return; }
     if (expression == "gle") { GotoIfLessOrEqualExpression{}.Interpret(context); return; }
     if (expression == "ggt") { GotoIfGreaterExpression{}.Interpret(context); return; }

@@ -1,5 +1,8 @@
-#include <exceptions/NotImplementedException.h>
+#include <expressions/jumps/GotoExpression.h>
 #include "GotoIfNotEqualExpression.h"
+
+GotoIfNotEqualExpression::GotoIfNotEqualExpression(int *currentRule)
+        : rule(currentRule) {}
 
 void GotoIfNotEqualExpression::Interpret(Context &context)
 {
@@ -7,9 +10,8 @@ void GotoIfNotEqualExpression::Interpret(Context &context)
     auto val2 = context.popStack();
     auto val1 = context.popStack();
 
-    if (val1 != val2)
+    if (*val1 != *val2)
     {
-        // Todo: Vervolg het interpreteren van instructies vanaf de locatie die gerepresenteerd wordt door de label-waarde
-        throw NotImplementedException();
+        *rule = stoi(*labelValue);
     }
 }

@@ -9,14 +9,15 @@
 class Program
 {
     private:
-        bool foundSolution;
+        bool foundSolution = false;
         std::string baseUrl;
+        int* currentRule;
     public:
         Program();
         Program(const std::string& baseUrl);
         std::string solve(const std::string& endpoint);
     private:
-        void handleExpression(const std::string& expression, Context& context, int rule);
+        void handleExpression(const std::string& expression, Context& context);
 };
 
 
