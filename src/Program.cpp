@@ -96,12 +96,12 @@ void Program::handleExpression(const std::string& expression, Context& context)
 
     // Test & Jumps
     if (expression == "gto") { GotoExpression{currentRule}.Interpret(context); return; }
-    if (expression == "geq") { GotoIfEqualExpression{}.Interpret(context); return; }
+    if (expression == "geq") { GotoIfEqualExpression{currentRule}.Interpret(context); return; }
     if (expression == "gne") { GotoIfNotEqualExpression{currentRule}.Interpret(context); return; }
-    if (expression == "glt") { GotoIfLessExpression{}.Interpret(context); return; }
-    if (expression == "gle") { GotoIfLessOrEqualExpression{}.Interpret(context); return; }
-    if (expression == "ggt") { GotoIfGreaterExpression{}.Interpret(context); return; }
-    if (expression == "gge") { GotoIfGreaterOrEqualExpression{}.Interpret(context); return; }
+    if (expression == "glt") { GotoIfLessExpression{currentRule}.Interpret(context); return; }
+    if (expression == "gle") { GotoIfLessOrEqualExpression{currentRule}.Interpret(context); return; }
+    if (expression == "ggt") { GotoIfGreaterExpression{currentRule}.Interpret(context); return; }
+    if (expression == "gge") { GotoIfGreaterOrEqualExpression{currentRule}.Interpret(context); return; }
 
     // Functions
     if (expression == "fun") throw NotImplementedException();

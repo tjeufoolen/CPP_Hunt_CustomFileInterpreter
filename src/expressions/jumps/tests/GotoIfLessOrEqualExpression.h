@@ -6,7 +6,10 @@
 
 class GotoIfLessOrEqualExpression : public AbstractExpression
 {
+    private:
+        int* rule;
     public:
+        GotoIfLessOrEqualExpression(int* currentRule);
         void Interpret(Context& context) override;
 };
 

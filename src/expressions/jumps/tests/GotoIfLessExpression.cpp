@@ -1,5 +1,7 @@
-#include <exceptions/NotImplementedException.h>
 #include "GotoIfLessExpression.h"
+
+GotoIfLessExpression::GotoIfLessExpression(int *currentRule)
+    : rule(currentRule) {}
 
 void GotoIfLessExpression::Interpret(Context &context)
 {
@@ -9,7 +11,6 @@ void GotoIfLessExpression::Interpret(Context &context)
 
     if (val1 < val2)
     {
-        // Todo: Vervolg het interpreteren van instructies vanaf de locatie die gerepresenteerd wordt door de label-waarde
-        throw NotImplementedException();
+        *rule = stoi(*labelValue);
     }
 }

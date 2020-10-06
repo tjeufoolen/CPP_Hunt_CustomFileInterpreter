@@ -1,5 +1,7 @@
-#include <exceptions/NotImplementedException.h>
 #include "GotoIfLessOrEqualExpression.h"
+
+GotoIfLessOrEqualExpression::GotoIfLessOrEqualExpression(int* currentRule)
+    : rule(currentRule) {}
 
 void GotoIfLessOrEqualExpression::Interpret(Context &context)
 {
@@ -9,7 +11,6 @@ void GotoIfLessOrEqualExpression::Interpret(Context &context)
 
     if (val1 < val2 || val1 == val2)
     {
-        // Todo: Vervolg het interpreteren van instructies vanaf de locatie die gerepresenteerd wordt door de label-waarde
-        throw NotImplementedException();
+        *rule = stoi(*labelValue);
     }
 }

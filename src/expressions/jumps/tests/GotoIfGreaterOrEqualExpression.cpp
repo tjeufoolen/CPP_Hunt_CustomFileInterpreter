@@ -1,5 +1,7 @@
-#include <exceptions/NotImplementedException.h>
 #include "GotoIfGreaterOrEqualExpression.h"
+
+GotoIfGreaterOrEqualExpression::GotoIfGreaterOrEqualExpression(int *currentRule)
+    : rule(currentRule) {}
 
 void GotoIfGreaterOrEqualExpression::Interpret(Context &context)
 {
@@ -7,9 +9,7 @@ void GotoIfGreaterOrEqualExpression::Interpret(Context &context)
     int val2 = stoi(*context.popStack());
     int val1 = stoi(*context.popStack());
 
-    if (val1 > val2 || val1 == val2)
-    {
-        // Todo: Vervolg het interpreteren van instructies vanaf de locatie die gerepresenteerd wordt door de label-waarde
-        throw NotImplementedException();
+    if (val1 > val2 || val1 == val2) {
+        *rule = stoi(*labelValue);
     }
 }

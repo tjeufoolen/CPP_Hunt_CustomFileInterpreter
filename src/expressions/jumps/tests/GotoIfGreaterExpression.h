@@ -6,7 +6,10 @@
 
 class GotoIfGreaterExpression : public AbstractExpression
 {
+    private:
+        int* rule;
     public:
+        GotoIfGreaterExpression(int* currentRule);
         void Interpret(Context& context) override;
 };
 
