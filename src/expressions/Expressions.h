@@ -32,6 +32,8 @@
 #include <expressions/jumps/tests/GotoIfLessOrEqualExpression.h>
 #include <expressions/jumps/tests/GotoIfGreaterExpression.h>
 #include <expressions/jumps/tests/GotoIfGreaterOrEqualExpression.h>
+#include <expressions/functions/FunctionExpression.h>
+#include <expressions/functions/ReturnExpression.h>
 
 
 #endif //CPPLS1_EINDOPDRACHT_EXPRESSIONS_H

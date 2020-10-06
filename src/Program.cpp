@@ -112,8 +112,8 @@ void Program::handleExpression(const std::string& expression, Context& context)
     if (expression == "gge") { GotoIfGreaterOrEqualExpression{currentRule}.Interpret(context); return; }
 
     // Functions
-    if (expression == "fun") throw NotImplementedException();
-    if (expression == "ret") throw NotImplementedException();
+    if (expression == "fun") { FunctionExpression{currentRule}.Interpret(context); return; }
+    if (expression == "ret") { ReturnExpression{currentRule}.Interpret(context); return; }
 
     // End
     if (expression == "end") foundSolution = true;

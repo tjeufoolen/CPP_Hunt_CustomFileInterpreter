@@ -23,6 +23,20 @@ const std::string& Context::backStack()
     return stack.back();
 }
 
+void Context::pushToCallStack(const std::string &str)
+{
+    callStack.push_back(str);
+    Logger::getInstance().debug("added " + str + " to the call stack.");
+}
+
+std::unique_ptr<std::string> Context::popCallStack()
+{
+    auto str = std::make_unique<std::string>(callStack.back());
+    callStack.pop_back();
+    Logger::getInstance().debug("removed and returned " + *str + " from the call stack.");
+    return str;
+}
+
 void Context::setVariable(const std::string &label, const std::string &value)
 {
     Logger::getInstance().debug("set variable " + label + "=" + value);

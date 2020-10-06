@@ -11,5 +11,5 @@ set(CMAKE_CXX_STANDARD 17)
 
 file(GLOB_RECURSE SOURCE_FILES ${SRC_DIR}/*.cpp ${SRC_DIR}/*.h)
 
-add_executable(${PROJECT_NAME} main.cpp ${SOURCE_FILES})
+add_executable(${PROJECT_NAME} main.cpp ${SOURCE_FILES} src/expressions/functions/FunctionExpression.cpp src/expressions/functions/FunctionExpression.h src/expressions/functions/ReturnExpression.cpp src/expressions/functions/ReturnExpression.h)
 target_include_directories(${PROJECT_NAME} PUBLIC ${SRC_DIR})
