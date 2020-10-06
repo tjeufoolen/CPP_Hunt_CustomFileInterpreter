@@ -64,7 +64,7 @@ void Program::handleExpression(const std::string& expression, Context& context, 
     {
         case '\\': TextExpression{exp}.Interpret(context); return;
         case  ':': LabelDefinitionExpression{exp, rule+1}.Interpret(context); return;
-        case  '>': context.pushToStack(std::to_string(context.getLabel(exp))); return;
+        case  '>': LabelReferenceExpression{}.Interpret(context); return;
         case  '=': VariableAssignmentExpression{exp, *context.popStack()}.Interpret(context); return;
         case  '$': VariableReferenceExpression{exp}.Interpret(context); return;
     }
@@ -91,13 +91,13 @@ void Program::handleExpression(const std::string& expression, Context& context, 
     if (expression == "enl") { NewLineExpression{}.Interpret(context); return; }
 
     // Test & Jumps
-    if (expression == "gto") throw NotImplementedException();
-    if (expression == "geq") throw NotImplementedException();
-    if (expression == "gne") throw NotImplementedException();
-    if (expression == "glt") throw NotImplementedException();
-    if (expression == "gle") throw NotImplementedException();
-    if (expression == "ggt") throw NotImplementedException();
-    if (expression == "gge") throw NotImplementedException();
+    if (expression == "gto") { GotoExpression{}.Interpret(context); return; }
+    if (expression == "geq") { GotoIfEqualExpression{}.Interpret(context); return; }
+    if (expression == "gne") { GotoIfNotEqualExpression{}.Interpret(context); return; }
+    if (expression == "glt") { GotoIfLessExpression{}.Interpret(context); return; }
+    if (expression == "gle") { GotoIfLessOrEqualExpression{}.Interpret(context); return; }
+    if (expression == "ggt") { GotoIfGreaterExpression{}.Interpret(context); return; }
+    if (expression == "gge") { GotoIfGreaterOrEqualExpression{}.Interpret(context); return; }
 
     // Functions
     if (expression == "fun") throw NotImplementedException();
