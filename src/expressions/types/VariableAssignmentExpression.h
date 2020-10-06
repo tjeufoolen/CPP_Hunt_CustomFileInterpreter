@@ -2,9 +2,9 @@
 #define CPPLS1_EINDOPDRACHT_VARIABLEASSIGNMENTEXPRESSION_H
 
 
-#include <expressions/AbstractExpression.h>
+#include <expressions/IExpression.h>
 
-class VariableAssignmentExpression : public AbstractExpression
+class VariableAssignmentExpression : public IExpression
 {
     private:
         const std::string& label;

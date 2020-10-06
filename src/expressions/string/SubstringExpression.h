@@ -2,9 +2,9 @@
 #define CPPLS1_EINDOPDRACHT_SUBSTRINGEXPRESSION_H
 
 
-#include <expressions/AbstractExpression.h>
+#include <expressions/IExpression.h>
 
-class SubstringExpression : public AbstractExpression
+class SubstringExpression : public IExpression
 {
     public:
         void Interpret(Context& context) override;

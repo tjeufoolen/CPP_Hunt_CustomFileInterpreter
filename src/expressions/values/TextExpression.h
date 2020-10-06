@@ -2,10 +2,10 @@
 #define CPPLS1_EINDOPDRACHT_TEXTEXPRESSION_H
 
 
-#include <expressions/AbstractExpression.h>
+#include <expressions/IExpression.h>
 #include <string>
 
-class TextExpression : public AbstractExpression
+class TextExpression : public IExpression
 {
     private:
         std::string text;

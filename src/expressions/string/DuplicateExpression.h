@@ -2,9 +2,9 @@
 #define CPPLS1_EINDOPDRACHT_DUPLICATEEXPRESSION_H
 
 
-#include <expressions/AbstractExpression.h>
+#include <expressions/IExpression.h>
 
-class DuplicateExpression : public AbstractExpression
+class DuplicateExpression : public IExpression
 {
     public:
         void Interpret(Context& context) override;

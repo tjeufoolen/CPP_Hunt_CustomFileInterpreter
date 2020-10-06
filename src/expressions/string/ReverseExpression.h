@@ -2,9 +2,9 @@
 #define CPPLS1_EINDOPDRACHT_REVERSEEXPRESSION_H
 
 
-#include <expressions/AbstractExpression.h>
+#include <expressions/IExpression.h>
 
-class ReverseExpression : public AbstractExpression
+class ReverseExpression : public IExpression
 {
     public:
         void Interpret(Context& context) override;

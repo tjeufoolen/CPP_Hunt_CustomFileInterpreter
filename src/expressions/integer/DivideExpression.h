@@ -2,9 +2,9 @@
 #define CPPLS1_EINDOPDRACHT_DIVIDEEXPRESSION_H
 
 
-#include <expressions/AbstractExpression.h>
+#include <expressions/IExpression.h>
 
-class DivideExpression : public AbstractExpression
+class DivideExpression : public IExpression
 {
     public:
         void Interpret(Context& context) override;

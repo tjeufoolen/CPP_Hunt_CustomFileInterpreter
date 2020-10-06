@@ -30,7 +30,16 @@ std::string Program::solve(const std::string& endpoint)
         std::vector<std::string> lines = cUrl->getResponse(baseUrl + _endpoint);
         Context context{};
 
-        // Read response line by line
+        // Pre-define labels
+        for (auto it = lines.begin(); it != lines.end(); ++it)
+        {
+            int index = std::distance(lines.begin(), it);
+            const std::string& expression = lines[index];
+            if (expression.front() == ':')
+                LabelDefinitionExpression{expression.substr(1), index}.Interpret(context);
+        }
+
+        // Handle expressions line by line
         for (auto it = lines.begin(); it != lines.end(); ++it)
         {
             *currentRule = std::distance(lines.begin(), it);
@@ -48,7 +57,6 @@ std::string Program::solve(const std::string& endpoint)
 
         Logger::getInstance().info("redirected to new file: " + lastStackValue);
         _endpoint = lastStackValue;
-//        foundSolution = true; //todo: Remove when all parsing works and end expression is detected!!! <------------------
     }
     // endwhile
 

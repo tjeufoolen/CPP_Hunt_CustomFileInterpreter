@@ -2,9 +2,9 @@
 #define CPPLS1_EINDOPDRACHT_MULTIPLYEXPRESSION_H
 
 
-#include <expressions/AbstractExpression.h>
+#include <expressions/IExpression.h>
 
-class MultiplyExpression : public AbstractExpression
+class MultiplyExpression : public IExpression
 {
     public:
         void Interpret(Context& context) override;

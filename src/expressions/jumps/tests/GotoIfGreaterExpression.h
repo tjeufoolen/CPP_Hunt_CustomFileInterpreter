@@ -2,9 +2,9 @@
 #define CPPLS1_EINDOPDRACHT_GOTOIFGREATEREXPRESSION_H
 
 
-#include <expressions/AbstractExpression.h>
+#include <expressions/IExpression.h>
 
-class GotoIfGreaterExpression : public AbstractExpression
+class GotoIfGreaterExpression : public IExpression
 {
     private:
         int* rule;

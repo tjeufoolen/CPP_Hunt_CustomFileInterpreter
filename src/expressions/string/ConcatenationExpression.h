@@ -2,9 +2,9 @@
 #define CPPLS1_EINDOPDRACHT_CONCATENATIONEXPRESSION_H
 
 
-#include <expressions/AbstractExpression.h>
+#include <expressions/IExpression.h>
 
-class ConcatenationExpression : public AbstractExpression
+class ConcatenationExpression : public IExpression
 {
     public:
         void Interpret(Context& context) override;

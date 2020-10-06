@@ -2,9 +2,9 @@
 #define CPPLS1_EINDOPDRACHT_VARIABLEREFERENCEEXPRESSION_H
 
 
-#include <expressions/AbstractExpression.h>
+#include <expressions/IExpression.h>
 
-class VariableReferenceExpression : public AbstractExpression
+class VariableReferenceExpression : public IExpression
 {
     private:
         const std::string& label;

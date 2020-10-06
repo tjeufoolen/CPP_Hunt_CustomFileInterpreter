@@ -2,9 +2,9 @@
 #define CPPLS1_EINDOPDRACHT_GOTOEXPRESSION_H
 
 
-#include <expressions/AbstractExpression.h>
+#include <expressions/IExpression.h>
 
-class GotoExpression : public AbstractExpression
+class GotoExpression : public IExpression
 {
     private:
         int* rule;

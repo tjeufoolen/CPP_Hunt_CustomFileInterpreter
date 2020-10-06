@@ -2,9 +2,9 @@
 #define CPPLS1_EINDOPDRACHT_LENGTHEXPRESSION_H
 
 
-#include <expressions/AbstractExpression.h>
+#include <expressions/IExpression.h>
 
-class LengthExpression : public AbstractExpression
+class LengthExpression : public IExpression
 {
     public:
         void Interpret(Context& context) override;

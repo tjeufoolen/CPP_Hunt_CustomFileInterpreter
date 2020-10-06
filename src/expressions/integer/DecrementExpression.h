@@ -2,9 +2,9 @@
 #define CPPLS1_EINDOPDRACHT_DECREMENTEXPRESSION_H
 
 
-#include <expressions/AbstractExpression.h>
+#include <expressions/IExpression.h>
 
-class DecrementExpression : public AbstractExpression
+class DecrementExpression : public IExpression
 {
     public:
         void Interpret(Context& context) override;

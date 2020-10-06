@@ -2,9 +2,9 @@
 #define CPPLS1_EINDOPDRACHT_INDEXINGEXPRESSION_H
 
 
-#include <expressions/AbstractExpression.h>
+#include <expressions/IExpression.h>
 
-class IndexingExpression : public AbstractExpression
+class IndexingExpression : public IExpression
 {
     public:
         void Interpret(Context& context) override;

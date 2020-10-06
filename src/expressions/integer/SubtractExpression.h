@@ -2,9 +2,9 @@
 #define CPPLS1_EINDOPDRACHT_SUBTRACTEXPRESSION_H
 
 
-#include <expressions/AbstractExpression.h>
+#include <expressions/IExpression.h>
 
-class SubtractExpression : public AbstractExpression
+class SubtractExpression : public IExpression
 {
     public:
         void Interpret(Context& context) override;

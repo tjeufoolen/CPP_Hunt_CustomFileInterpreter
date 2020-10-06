@@ -2,9 +2,9 @@
 #define CPPLS1_EINDOPDRACHT_ROT13EXPRESSION_H
 
 
-#include <expressions/AbstractExpression.h>
+#include <expressions/IExpression.h>
 
-class ROT13Expression : public AbstractExpression
+class ROT13Expression : public IExpression
 {
     public:
         void Interpret(Context& context) override;

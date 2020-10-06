@@ -2,9 +2,9 @@
 #define CPPLS1_EINDOPDRACHT_ADDEXPRESSION_H
 
 
-#include <expressions/AbstractExpression.h>
+#include <expressions/IExpression.h>
 
-class AddExpression : public AbstractExpression
+class AddExpression : public IExpression
 {
     public:
         void Interpret(Context& context) override;

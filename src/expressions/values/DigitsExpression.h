@@ -2,9 +2,9 @@
 #define CPPLS1_EINDOPDRACHT_DIGITSEXPRESSION_H
 
 
-#include <expressions/AbstractExpression.h>
+#include <expressions/IExpression.h>
 
-class DigitsExpression : public AbstractExpression
+class DigitsExpression : public IExpression
 {
     private:
         const std::string& expression;

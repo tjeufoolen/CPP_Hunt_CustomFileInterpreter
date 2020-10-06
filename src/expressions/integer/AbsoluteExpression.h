@@ -2,9 +2,9 @@
 #define CPPLS1_EINDOPDRACHT_ABSOLUTEEXPRESSION_H
 
 
-#include <expressions/AbstractExpression.h>
+#include <expressions/IExpression.h>
 
-class AbsoluteExpression : public AbstractExpression
+class AbsoluteExpression : public IExpression
 {
     public:
         void Interpret(Context& context) override;

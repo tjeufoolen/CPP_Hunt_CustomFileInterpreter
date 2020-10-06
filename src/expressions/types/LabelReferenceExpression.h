@@ -2,9 +2,9 @@
 #define CPPLS1_EINDOPDRACHT_LABELREFERENCEEXPRESSION_H
 
 
-#include <expressions/AbstractExpression.h>
+#include <expressions/IExpression.h>
 
-class LabelReferenceExpression : public AbstractExpression
+class LabelReferenceExpression : public IExpression
 {
     private:
         const std::string& label;

@@ -2,9 +2,9 @@
 #define CPPLS1_EINDOPDRACHT_NEWLINEEXPRESSION_H
 
 
-#include <expressions/AbstractExpression.h>
+#include <expressions/IExpression.h>
 
-class NewLineExpression : public AbstractExpression
+class NewLineExpression : public IExpression
 {
     public:
         void Interpret(Context& context) override;

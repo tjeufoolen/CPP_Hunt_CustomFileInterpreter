@@ -2,9 +2,9 @@
 #define CPPLS1_EINDOPDRACHT_GOTOIFEQUALEXPRESSION_H
 
 
-#include <expressions/AbstractExpression.h>
+#include <expressions/IExpression.h>
 
-class GotoIfEqualExpression : public AbstractExpression
+class GotoIfEqualExpression : public IExpression
 {
     private:
         int* rule;

@@ -2,9 +2,9 @@
 #define CPPLS1_EINDOPDRACHT_MODULOEXPRESSION_H
 
 
-#include <expressions/AbstractExpression.h>
+#include <expressions/IExpression.h>
 
-class ModuloExpression : public AbstractExpression
+class ModuloExpression : public IExpression
 {
     public:
         void Interpret(Context& context) override;

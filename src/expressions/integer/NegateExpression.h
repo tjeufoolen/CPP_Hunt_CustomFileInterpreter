@@ -2,9 +2,9 @@
 #define CPPLS1_EINDOPDRACHT_NEGATEEXPRESSION_H
 
 
-#include <expressions/AbstractExpression.h>
+#include <expressions/IExpression.h>
 
-class NegateExpression : public AbstractExpression
+class NegateExpression : public IExpression
 {
     public:
         void Interpret(Context& context) override;
