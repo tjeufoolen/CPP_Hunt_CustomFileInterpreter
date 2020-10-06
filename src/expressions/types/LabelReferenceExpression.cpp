@@ -1,8 +1,9 @@
-#include <exceptions/NotImplementedException.h>
 #include "LabelReferenceExpression.h"
+
+LabelReferenceExpression::LabelReferenceExpression(const std::string &label)
+    : label(label) {}
 
 void LabelReferenceExpression::Interpret(Context &context)
 {
-    // todo: zet de waarde van het label op de stack. Dit is een door jou gekozen representatie van de programmaregel die volgde op de label-definitie.
-    throw NotImplementedException();
+    context.pushToStack(std::to_string(context.getLabel(label)));
 }

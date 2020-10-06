@@ -6,7 +6,10 @@
 
 class LabelReferenceExpression : public AbstractExpression
 {
+    private:
+        const std::string& label;
     public:
+        LabelReferenceExpression(const std::string& label);
         void Interpret(Context& context) override;
 };
 

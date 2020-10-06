@@ -64,7 +64,7 @@ void Program::handleExpression(const std::string& expression, Context& context, 
     {
         case '\\': TextExpression{exp}.Interpret(context); return;
         case  ':': LabelDefinitionExpression{exp, rule+1}.Interpret(context); return;
-        case  '>': LabelReferenceExpression{}.Interpret(context); return;
+        case  '>': LabelReferenceExpression{exp}.Interpret(context); return;
         case  '=': VariableAssignmentExpression{exp, *context.popStack()}.Interpret(context); return;
         case  '$': VariableReferenceExpression{exp}.Interpret(context); return;
     }
