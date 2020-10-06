@@ -17,12 +17,12 @@
 int main()
 {
     // prepare
-    Logger::getInstance()->toggleDebugMessages(true);
+    Logger::getInstance().toggleDebugMessages(true);
     Program program{};
 
     // solve
     std::string solution = program.solve("start.txt");
-    Logger::getInstance()->info("solution: " + solution);
+    Logger::getInstance().info("solution: " + solution);
 
     return 0;
 }

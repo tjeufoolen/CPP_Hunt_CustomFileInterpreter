@@ -23,7 +23,7 @@ std::string Program::solve(const std::string& endpoint)
     foundSolution = false;
     std::string lastStackValue;
 
-    Logger::getInstance()->info("Started solving...");
+    Logger::getInstance().info("Started solving...");
     while(!foundSolution)
     {
         std::vector<std::string> lines = cUrl->getResponse(baseUrl + _endpoint);
@@ -33,7 +33,7 @@ std::string Program::solve(const std::string& endpoint)
         for (auto it = lines.begin(); it != lines.end(); ++it)
         {
             int rule = std::distance(lines.begin(), it);
-            Logger::getInstance()->debug("executing expression >> " + lines[rule]);
+            Logger::getInstance().debug("executing expression >> " + lines[rule]);
             handleExpression(lines[rule], context, rule);
 
             if (foundSolution) break; // Quit early if solution is already found
@@ -42,7 +42,7 @@ std::string Program::solve(const std::string& endpoint)
         lastStackValue = context.backStack();
         if (foundSolution) break; // Quit early if solution is already found
 
-        Logger::getInstance()->info("redirected to new file: " + lastStackValue);
+        Logger::getInstance().info("redirected to new file: " + lastStackValue);
         _endpoint = lastStackValue;
         foundSolution = true; //todo: Remove when all parsing works and end expression is detected!!! <------------------
     }

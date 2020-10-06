@@ -7,10 +7,10 @@
 class Logger
 {
     private:
-        static Logger* instance;
+        static Logger instance;
         bool showDebug = false;
     public:
-        static Logger* getInstance();
+        static Logger& getInstance();
         void toggleDebugMessages(bool show);
         void debug(const std::string& message);
         void info(const std::string& message);
