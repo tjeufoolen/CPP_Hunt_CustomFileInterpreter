@@ -16,6 +16,13 @@ void Logger::toggleDebugMessages(bool show)
 }
 
 
+void Logger::error(const std::string &message)
+{
+    std::cout << "[ERROR] >> " << message << std::endl;
+    exit(1);
+}
+
+
 void Logger::debug(const std::string &message)
 {
     if (showDebug)

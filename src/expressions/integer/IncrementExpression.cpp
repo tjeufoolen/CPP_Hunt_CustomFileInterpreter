@@ -2,6 +2,6 @@
 
 void IncrementExpression::Interpret(Context &context)
 {
-    int val = stoi(*context.popStack());
-    context.pushToStack(std::to_string(++val));
+    int val = stoi(*context.popStack()) + 1;
+    context.pushToStack(std::to_string(val));
 }

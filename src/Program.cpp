@@ -22,7 +22,7 @@ std::string Program::solve(const std::string& endpoint)
     *currentRule = 0;
     std::string lastStackValue;
 
-    Logger::getInstance().info("Started solving...");
+    Logger::getInstance().info("Started solving " + endpoint + "...");
     while(!foundSolution)
     {
         std::vector<std::string> lines;
@@ -32,7 +32,7 @@ std::string Program::solve(const std::string& endpoint)
         }
         catch (FileNotFoundException& e)
         {
-            return e.what();
+            Logger::getInstance().error(e.what());
         }
 
         Context context{};

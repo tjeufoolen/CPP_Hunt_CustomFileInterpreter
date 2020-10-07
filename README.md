@@ -16,6 +16,7 @@ The end solution of this assessment is found by following these files in order:
 1. `start.txt`
 2. `aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.txt`
 3. `4812-9-6727.txt`
+4. `AasHgsho.txt`
 
 ## Author
 - [Tjeu Foolen](https://github.com/tjeufoolen)
