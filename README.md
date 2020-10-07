@@ -17,6 +17,15 @@ The end solution of this assessment is found by following these files in order:
 2. `aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.txt`
 3. `4812-9-6727.txt`
 4. `AasHgsho.txt`
+5. `Bososen-hosgen-in-warme-losden-aos-de-bososenboom.txt`
+6. `we-zijn-er-bijna.txt`
+7. `ninaf-zvabe-fjn-pcc1.txt`
+
+Final solution: 
+```
+Real stupidity beats artificial intelligence every time.
+                                      -- Terry Pratchett
+```
 
 ## Author
 - [Tjeu Foolen](https://github.com/tjeufoolen)
