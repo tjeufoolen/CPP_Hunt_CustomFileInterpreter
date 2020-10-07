@@ -3,7 +3,8 @@
 void IndexingExpression::Interpret(Context &context)
 {
     int index = stoi(*context.popStack());
-    auto str = context.popStack();
+    std::string str = *context.popStack();
+    char idx = str.at(index);
 
-    context.pushToStack(std::to_string(str->at(index)));
+    context.pushToStack(std::string(1, idx));
 }

@@ -1,3 +1,4 @@
+#include <exceptions/FileNotFoundException.h>
 #include "CUrlWrapper.h"
 
 cUrlWrapper::cUrlWrapper()
@@ -26,14 +27,14 @@ std::vector<std::string> cUrlWrapper::getResponse(const std::string& url)
         curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
         curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, callback);
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
+        curl_easy_setopt(curl, CURLOPT_FAILONERROR, true);
 
         /* Perform the request, res will get the return code */
         response = curl_easy_perform(curl);
 
         /* Check for errors */
-        if (response != CURLE_OK)
-            fprintf(stderr, "curl_easy_perform() failed: %s\n",
-                    curl_easy_strerror(response));
+        if (response == CURLE_HTTP_RETURNED_ERROR)
+            throw FileNotFoundException();
 
         /* always cleanup */
         curl_easy_cleanup(curl);

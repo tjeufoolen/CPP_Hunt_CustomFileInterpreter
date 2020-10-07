@@ -2,6 +2,7 @@
 #include <wrappers/CUrlWrapper.h>
 #include <utils/Logger.h>
 #include <expressions/Expressions.h>
+#include <exceptions/FileNotFoundException.h>
 
 Program::Program()
 {
@@ -24,7 +25,16 @@ std::string Program::solve(const std::string& endpoint)
     Logger::getInstance().info("Started solving...");
     while(!foundSolution)
     {
-        std::vector<std::string> lines = cUrl->getResponse(baseUrl + _endpoint);
+        std::vector<std::string> lines;
+
+        try {
+            lines = cUrl->getResponse(baseUrl + _endpoint);
+        }
+        catch (FileNotFoundException& e)
+        {
+            return e.what();
+        }
+
         Context context{};
 
         // Pre-define labels
