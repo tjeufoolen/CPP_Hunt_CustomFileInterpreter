@@ -5,5 +5,4 @@
 .idea/
 
 # Build location
-debug/
-release/
+out/
