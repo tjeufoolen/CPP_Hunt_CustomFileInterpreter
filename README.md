@@ -11,6 +11,11 @@ Elaboration of final assessment for the CPPLS1 module.
 3. Modify main.cpp to use a valid starting baseUrl and endpoint.
 4. Run the program and retrieve the solution 🔍:shipit:.
 
+## Leak detection
+Run leak detection with [valgrind](https://valgrind.org/) using the command;
+
+`valgrind --leak-check=yes --log-file="../../leak.log" ./CPPLS1_Eindopdracht`
+
 ## Solution
 The end solution of this assessment is found by following these files in order:
 1. `start.txt`

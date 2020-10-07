@@ -6,3 +6,6 @@
 
 # Build location
 out/
+
+# Log files
+*.log
