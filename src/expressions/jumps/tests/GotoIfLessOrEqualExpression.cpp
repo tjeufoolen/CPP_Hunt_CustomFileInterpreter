@@ -1,6 +1,6 @@
 #include "GotoIfLessOrEqualExpression.h"
 
-GotoIfLessOrEqualExpression::GotoIfLessOrEqualExpression(int* currentRule)
+GotoIfLessOrEqualExpression::GotoIfLessOrEqualExpression(int &currentRule)
     : rule(currentRule) {}
 
 void GotoIfLessOrEqualExpression::Interpret(Context &context)
@@ -11,6 +11,6 @@ void GotoIfLessOrEqualExpression::Interpret(Context &context)
 
     if (val1 < val2 || val1 == val2)
     {
-        *rule = stoi(*labelValue);
+        rule = stoi(*labelValue);
     }
 }

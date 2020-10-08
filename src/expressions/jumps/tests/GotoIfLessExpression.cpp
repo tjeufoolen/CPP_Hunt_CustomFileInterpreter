@@ -1,6 +1,6 @@
 #include "GotoIfLessExpression.h"
 
-GotoIfLessExpression::GotoIfLessExpression(int *currentRule)
+GotoIfLessExpression::GotoIfLessExpression(int &currentRule)
     : rule(currentRule) {}
 
 void GotoIfLessExpression::Interpret(Context &context)
@@ -11,6 +11,6 @@ void GotoIfLessExpression::Interpret(Context &context)
 
     if (val1 < val2)
     {
-        *rule = stoi(*labelValue);
+        rule = stoi(*labelValue);
     }
 }

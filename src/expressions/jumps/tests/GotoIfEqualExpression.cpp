@@ -1,6 +1,6 @@
 #include "GotoIfEqualExpression.h"
 
-GotoIfEqualExpression::GotoIfEqualExpression(int *currentRule)
+GotoIfEqualExpression::GotoIfEqualExpression(int &currentRule)
     : rule(currentRule) {}
 
 void GotoIfEqualExpression::Interpret(Context &context)
@@ -11,6 +11,6 @@ void GotoIfEqualExpression::Interpret(Context &context)
 
     if (*val1 == *val2)
     {
-        *rule = stoi(*labelValue);
+        rule = stoi(*labelValue);
     }
 }

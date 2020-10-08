@@ -7,9 +7,9 @@
 class GotoIfGreaterOrEqualExpression : public IExpression
 {
     private:
-        int* rule;
+        int &rule;
     public:
-        GotoIfGreaterOrEqualExpression(int* currentRule);
+        GotoIfGreaterOrEqualExpression(int &currentRule);
         void Interpret(Context& context) override;
 };
 

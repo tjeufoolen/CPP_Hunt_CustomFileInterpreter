@@ -7,9 +7,9 @@
 class ReturnExpression : public IExpression
 {
     private:
-        int* rule;
+        int &rule;
     public:
-        ReturnExpression(int* currentRule);
+        ReturnExpression(int &currentRule);
         void Interpret(Context& context) override;
 };
 

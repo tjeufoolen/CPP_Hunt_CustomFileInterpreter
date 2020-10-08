@@ -1,19 +1,17 @@
 #include <utils/Logger.h>
 #include "Context.h"
 
-Context::Context() {}
-
 void Context::pushToStack(const std::string &str)
 {
-    stack.push_back(str);
     Logger::getInstance().debug("added " + str + " to the stack.");
+    stack.push_back(str);
 }
 
 std::unique_ptr<std::string> Context::popStack()
 {
     auto str = std::make_unique<std::string>(stack.back());
-    stack.pop_back();
     Logger::getInstance().debug("removed and returned " + *str + " from the stack.");
+    stack.pop_back();
     return str;
 }
 
@@ -25,15 +23,15 @@ const std::string& Context::backStack()
 
 void Context::pushToCallStack(const std::string &str)
 {
-    callStack.push_back(str);
     Logger::getInstance().debug("added " + str + " to the call stack.");
+    callStack.push_back(str);
 }
 
 std::unique_ptr<std::string> Context::popCallStack()
 {
     auto str = std::make_unique<std::string>(callStack.back());
-    callStack.pop_back();
     Logger::getInstance().debug("removed and returned " + *str + " from the call stack.");
+    callStack.pop_back();
     return str;
 }
 

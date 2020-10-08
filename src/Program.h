@@ -9,9 +9,9 @@
 class Program
 {
     private:
-        bool foundSolution = false;
+        bool foundSolution{false};
         std::string baseUrl;
-        int* currentRule;
+        int currentRule = 0;
     public:
         Program();
         Program(const std::string& baseUrl);

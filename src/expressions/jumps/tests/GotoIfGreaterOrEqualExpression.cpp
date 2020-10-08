@@ -1,6 +1,6 @@
 #include "GotoIfGreaterOrEqualExpression.h"
 
-GotoIfGreaterOrEqualExpression::GotoIfGreaterOrEqualExpression(int *currentRule)
+GotoIfGreaterOrEqualExpression::GotoIfGreaterOrEqualExpression(int &currentRule)
     : rule(currentRule) {}
 
 void GotoIfGreaterOrEqualExpression::Interpret(Context &context)
@@ -10,6 +10,6 @@ void GotoIfGreaterOrEqualExpression::Interpret(Context &context)
     int val1 = stoi(*context.popStack());
 
     if (val1 > val2 || val1 == val2) {
-        *rule = stoi(*labelValue);
+        rule = stoi(*labelValue);
     }
 }

@@ -1,6 +1,7 @@
 #include <Program.h>
 #include <wrappers/CUrlWrapper.h>
 #include <utils/Logger.h>
+#include <memory>
 #include <expressions/Expressions.h>
 #include <exceptions/FileNotFoundException.h>
 
@@ -19,7 +20,7 @@ std::string Program::solve(const std::string& endpoint)
 
     // while .... end expression is not yet seen
     foundSolution = false;
-    *currentRule = 0;
+    currentRule = 0;
     std::string lastStackValue;
 
     Logger::getInstance().info("Started solving " + endpoint + "...");
@@ -49,14 +50,14 @@ std::string Program::solve(const std::string& endpoint)
         // Handle expressions line by line
         for (auto it = lines.begin(); it != lines.end(); ++it)
         {
-            *currentRule = std::distance(lines.begin(), it);
+            currentRule = std::distance(lines.begin(), it);
 
-            Logger::getInstance().debug(lines[*currentRule]);
-            handleExpression(lines[*currentRule], context);
+            Logger::getInstance().debug(lines[currentRule]);
+            handleExpression(lines[currentRule], context);
 
             if (foundSolution) break; // Quit early if solution is already found
 
-            it = lines.begin() + *currentRule;
+            it = lines.begin() + currentRule;
         }
 
         lastStackValue = context.backStack();
@@ -119,7 +120,7 @@ void Program::handleExpression(const std::string& expression, Context& context)
     switch(expression.front())
     {
         case '\\': TextExpression{exp}.Interpret(context); return;
-        case  ':': LabelDefinitionExpression{exp, *currentRule}.Interpret(context); return;
+        case  ':': LabelDefinitionExpression{exp, currentRule}.Interpret(context); return;
         case  '>': LabelReferenceExpression{exp}.Interpret(context); return;
         case  '=': VariableAssignmentExpression{exp, *context.popStack()}.Interpret(context); return;
         case  '$': VariableReferenceExpression{exp}.Interpret(context); return;

@@ -7,9 +7,9 @@
 class FunctionExpression : public IExpression
 {
     private:
-        int* rule;
+        int &rule;
     public:
-        FunctionExpression(int* rule);
+        FunctionExpression(int &rule);
         void Interpret(Context& context) override;
 };
 

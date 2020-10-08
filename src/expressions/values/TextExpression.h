@@ -8,7 +8,7 @@
 class TextExpression : public IExpression
 {
     private:
-        std::string text;
+        const std::string& text;
     public:
         TextExpression(const std::string& text);
         void Interpret(Context& context) override;

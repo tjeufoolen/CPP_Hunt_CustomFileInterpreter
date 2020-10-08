@@ -1,6 +1,6 @@
 #include "GotoIfNotEqualExpression.h"
 
-GotoIfNotEqualExpression::GotoIfNotEqualExpression(int *currentRule)
+GotoIfNotEqualExpression::GotoIfNotEqualExpression(int &currentRule)
         : rule(currentRule) {}
 
 void GotoIfNotEqualExpression::Interpret(Context &context)
@@ -11,6 +11,6 @@ void GotoIfNotEqualExpression::Interpret(Context &context)
 
     if (*val1 != *val2)
     {
-        *rule = stoi(*labelValue);
+        rule = stoi(*labelValue);
     }
 }

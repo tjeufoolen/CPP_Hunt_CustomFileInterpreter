@@ -7,9 +7,9 @@
 class GotoExpression : public IExpression
 {
     private:
-        int* rule;
+        int &rule;
     public:
-        GotoExpression(int* currentUrl);
+        GotoExpression(int &currentUrl);
         void Interpret(Context& context) override;
 };
 

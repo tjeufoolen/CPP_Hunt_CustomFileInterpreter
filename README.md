@@ -2,8 +2,9 @@
 Elaboration of final assessment for the CPPLS1 module.
 
 ## Prerequisites
-- CMake > = 3.17
+- CMake >= 3.17
 - C++ compiler
+- [optional] valgrind (for testing leak detections)
 
 ## Getting started
 1. Clone this repository.
@@ -14,7 +15,7 @@ Elaboration of final assessment for the CPPLS1 module.
 ## Leak detection
 Run leak detection with [valgrind](https://valgrind.org/) using the command;
 
-`valgrind --leak-check=yes --log-file="../../leak.log" ./CPPLS1_Eindopdracht`
+`valgrind --leak-check=yes --suppressions=darwin-19.supp out/debug/CPPLS1_Eindopdracht`
 
 ## Solution
 The end solution of this assessment is found by following these files in order:

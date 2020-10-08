@@ -4,6 +4,7 @@
 
 #include <vector>
 #include <string>
+#include <memory>
 #include <map>
 
 class Context
@@ -14,7 +15,6 @@ class Context
         std::map<std::string, std::string> variables;
         std::map<std::string, int> labels;
     public:
-        Context();
         void pushToStack(const std::string& str);
         std::unique_ptr<std::string> popStack();
         const std::string& backStack();

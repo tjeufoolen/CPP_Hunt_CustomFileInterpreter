@@ -7,9 +7,9 @@
 class GotoIfLessExpression : public IExpression
 {
     private:
-        int* rule;
+        int &rule;
     public:
-        GotoIfLessExpression(int* currentRule);
+        GotoIfLessExpression(int &currentRule);
         void Interpret(Context& context) override;
 };
 

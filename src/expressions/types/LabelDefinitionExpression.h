@@ -8,9 +8,9 @@ class LabelDefinitionExpression : public IExpression
 {
     private:
         const std::string& label;
-        int rule;
+        int &rule;
     public:
-        LabelDefinitionExpression(const std::string& label, int rule);
+        LabelDefinitionExpression(const std::string& label, int &rule);
         void Interpret(Context& context) override;
 };
 

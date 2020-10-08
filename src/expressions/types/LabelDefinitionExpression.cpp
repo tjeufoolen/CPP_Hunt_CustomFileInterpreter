@@ -1,6 +1,6 @@
 #include "LabelDefinitionExpression.h"
 
-LabelDefinitionExpression::LabelDefinitionExpression(const std::string &label, int rule)
+LabelDefinitionExpression::LabelDefinitionExpression(const std::string &label, int &rule)
     : label(label), rule(rule) {}
 
 void LabelDefinitionExpression::Interpret(Context &context)
