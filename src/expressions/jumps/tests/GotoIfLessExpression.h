@@ -9,6 +9,7 @@ class GotoIfLessExpression : public IExpression
     private:
         int &rule;
     public:
+        GotoIfLessExpression() = delete;
         GotoIfLessExpression(int &currentRule);
         void Interpret(Context& context) override;
 };

@@ -9,6 +9,7 @@ class VariableReferenceExpression : public IExpression
     private:
         const std::string& label;
     public:
+        VariableReferenceExpression() = delete;
         VariableReferenceExpression(const std::string& label);
         void Interpret(Context& context) override;
 };

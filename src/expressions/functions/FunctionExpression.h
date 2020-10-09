@@ -9,6 +9,7 @@ class FunctionExpression : public IExpression
     private:
         int &rule;
     public:
+        FunctionExpression() = delete;
         FunctionExpression(int &rule);
         void Interpret(Context& context) override;
 };

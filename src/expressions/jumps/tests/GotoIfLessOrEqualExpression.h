@@ -9,6 +9,7 @@ class GotoIfLessOrEqualExpression : public IExpression
     private:
         int &rule;
     public:
+        GotoIfLessOrEqualExpression() = delete;
         GotoIfLessOrEqualExpression(int &currentRule);
         void Interpret(Context& context) override;
 };

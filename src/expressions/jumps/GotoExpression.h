@@ -9,6 +9,7 @@ class GotoExpression : public IExpression
     private:
         int &rule;
     public:
+        GotoExpression() = delete;
         GotoExpression(int &currentUrl);
         void Interpret(Context& context) override;
 };

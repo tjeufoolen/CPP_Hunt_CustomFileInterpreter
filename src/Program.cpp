@@ -136,5 +136,6 @@ void Program::handleExpression(const std::string& expression, Context& context)
         case  '$': VariableReferenceExpression{exp}.Interpret(context); return;
     }
 
+    // If we get here, it probably means that the expression is unknown.
     throw ExpressionNotFoundException();
 }

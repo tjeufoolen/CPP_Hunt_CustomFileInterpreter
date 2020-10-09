@@ -10,6 +10,7 @@ class LabelDefinitionExpression : public IExpression
         const std::string& label;
         int &rule;
     public:
+        LabelDefinitionExpression() = delete;
         LabelDefinitionExpression(const std::string& label, int &rule);
         void Interpret(Context& context) override;
 };

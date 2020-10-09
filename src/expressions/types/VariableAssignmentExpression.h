@@ -10,6 +10,7 @@ class VariableAssignmentExpression : public IExpression
         const std::string& label;
         const std::string& value;
     public:
+        VariableAssignmentExpression() = delete;
         VariableAssignmentExpression(const std::string& label, const std::string& value);
         void Interpret(Context& context) override;
 };

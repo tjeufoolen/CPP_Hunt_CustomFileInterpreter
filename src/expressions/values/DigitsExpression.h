@@ -9,6 +9,7 @@ class DigitsExpression : public IExpression
     private:
         const std::string& expression;
     public:
+        DigitsExpression() = delete;
         DigitsExpression(const std::string& expression);
         void Interpret(Context& context) override;
 };

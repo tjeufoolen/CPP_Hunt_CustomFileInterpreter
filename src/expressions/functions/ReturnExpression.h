@@ -9,6 +9,7 @@ class ReturnExpression : public IExpression
     private:
         int &rule;
     public:
+        ReturnExpression() = delete;
         ReturnExpression(int &currentRule);
         void Interpret(Context& context) override;
 };

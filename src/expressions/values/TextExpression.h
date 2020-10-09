@@ -10,6 +10,7 @@ class TextExpression : public IExpression
     private:
         const std::string& text;
     public:
+        TextExpression() = delete;
         TextExpression(const std::string& text);
         void Interpret(Context& context) override;
 };

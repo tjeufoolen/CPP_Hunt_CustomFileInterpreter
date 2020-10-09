@@ -9,6 +9,7 @@ class LabelReferenceExpression : public IExpression
     private:
         const std::string& label;
     public:
+        LabelReferenceExpression() = delete;
         LabelReferenceExpression(const std::string& label);
         void Interpret(Context& context) override;
 };
