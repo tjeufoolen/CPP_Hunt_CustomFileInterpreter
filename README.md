@@ -13,8 +13,7 @@ Elaboration of final assessment for the CPPLS1 module.
 4. Run the program and retrieve the solution 🔍:shipit:.
 
 ## Leak detection
-Run leak detection with [valgrind](https://valgrind.org/) using the command;
-
+Run leak detection on MacOS Catalina with [valgrind](https://valgrind.org/) using the command;
 `valgrind --leak-check=yes --suppressions=darwin-19.supp out/debug/CPPLS1_Eindopdracht`
 
 ## Solution

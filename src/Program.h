@@ -17,6 +17,8 @@ class Program
         Program(const std::string& baseUrl);
         std::string solve(const std::string& endpoint);
     private:
+        void predefineLabels(const std::vector<std::string> &lines, Context& context);
+        void handleExpressions(const std::vector<std::string> &lines, Context& context);
         void handleExpression(const std::string& expression, Context& context);
 };
 

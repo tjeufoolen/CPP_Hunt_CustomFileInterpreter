@@ -4,6 +4,7 @@
 #include <memory>
 #include <expressions/Expressions.h>
 #include <exceptions/FileNotFoundException.h>
+#include <exceptions/ExpressionNotFoundException.h>
 
 Program::Program()
 {
@@ -27,38 +28,17 @@ std::string Program::solve(const std::string& endpoint)
     while(!foundSolution)
     {
         std::vector<std::string> lines;
-
         try {
             lines = cUrl->getResponse(baseUrl + _endpoint);
         }
-        catch (FileNotFoundException& e)
-        {
+        catch (FileNotFoundException& e) {
             Logger::getInstance().error(e.what());
         }
 
         Context context{};
 
-        // Pre-define labels
-        for (auto it = lines.begin(); it != lines.end(); ++it)
-        {
-            int index = std::distance(lines.begin(), it);
-            const std::string& expression = lines[index];
-            if (expression.front() == ':')
-                LabelDefinitionExpression{expression.substr(1), index}.Interpret(context);
-        }
-
-        // Handle expressions line by line
-        for (auto it = lines.begin(); it != lines.end(); ++it)
-        {
-            currentRule = std::distance(lines.begin(), it);
-
-            Logger::getInstance().debug(lines[currentRule]);
-            handleExpression(lines[currentRule], context);
-
-            if (foundSolution) break; // Quit early if solution is already found
-
-            it = lines.begin() + currentRule;
-        }
+        predefineLabels(lines, context);
+        handleExpressions(lines, context);
 
         lastStackValue = context.backStack();
         if (foundSolution) break; // Quit early if solution is already found
@@ -71,6 +51,36 @@ std::string Program::solve(const std::string& endpoint)
     return lastStackValue;
 }
 
+void Program::predefineLabels(const std::vector<std::string> &lines, Context& context)
+{
+    for (auto it = lines.begin(); it != lines.end(); ++it)
+    {
+        int index = std::distance(lines.begin(), it);
+        const std::string& expression = lines[index];
+        if (expression.front() == ':')
+            LabelDefinitionExpression{expression.substr(1), index}.Interpret(context);
+    }
+}
+
+void Program::handleExpressions(const std::vector<std::string> &lines, Context& context)
+{
+    for (auto it = lines.begin(); it != lines.end(); ++it)
+    {
+        currentRule = std::distance(lines.begin(), it);
+
+        Logger::getInstance().debug(lines[currentRule]);
+        try {
+            handleExpression(lines[currentRule], context);
+        }
+        catch (ExpressionNotFoundException& e) {
+            Logger::getInstance().error(e.what());
+        }
+
+        if (foundSolution) break; // Quit early if solution is already found
+
+        it = lines.begin() + currentRule;
+    }
+}
 
 void Program::handleExpression(const std::string& expression, Context& context)
 {
@@ -113,7 +123,7 @@ void Program::handleExpression(const std::string& expression, Context& context)
     if (expression == "ret") { ReturnExpression{currentRule}.Interpret(context); return; }
 
     // End
-    if (expression == "end") foundSolution = true;
+    if (expression == "end") { foundSolution = true; return; }
 
     // Values & types
     std::string exp = expression.substr(1);
@@ -125,4 +135,6 @@ void Program::handleExpression(const std::string& expression, Context& context)
         case  '=': VariableAssignmentExpression{exp, *context.popStack()}.Interpret(context); return;
         case  '$': VariableReferenceExpression{exp}.Interpret(context); return;
     }
+
+    throw ExpressionNotFoundException();
 }
