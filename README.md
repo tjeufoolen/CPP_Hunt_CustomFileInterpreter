@@ -1,4 +1,4 @@
-# CPP_Hunt_CustomFileInterpreter
+# CTFKrulInterpreter
 This project is part of a hunt and contains code files available in `files` which should be interpreted. The task was to start with start.txt and given some criteria interpret it. After the file had been interpreted the solution would be another file name. This process kept looping untill the solution wasn't a file.
 
 The correct order and final solution can be found below.
